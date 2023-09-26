@@ -754,6 +754,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2025969599252340148, guid: eea17d538bf8c3543b03a72c2fc3bb25,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3609715750197628669, guid: eea17d538bf8c3543b03a72c2fc3bb25,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -811,10 +816,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6956158023204121319, guid: eea17d538bf8c3543b03a72c2fc3bb25,
         type: 3}
+      propertyPath: testing
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6956158023204121319, guid: eea17d538bf8c3543b03a72c2fc3bb25,
+        type: 3}
       propertyPath: kitchenObjectSO
       value: 
       objectReference: {fileID: 11400000, guid: 98154823ef585694b895ed13bb4aa623,
         type: 2}
+    - target: {fileID: 6956158023204121319, guid: eea17d538bf8c3543b03a72c2fc3bb25,
+        type: 3}
+      propertyPath: secondClearCounter
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -913,6 +928,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1491510157 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6956158023204121319, guid: eea17d538bf8c3543b03a72c2fc3bb25,
+    type: 3}
+  m_PrefabInstance: {fileID: 1464799748205628595}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25da83c37918eee44b09f96f5285cf19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1529849410 stripped
@@ -1079,6 +1106,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6956158023204121319, guid: eea17d538bf8c3543b03a72c2fc3bb25,
         type: 3}
+      propertyPath: testing
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6956158023204121319, guid: eea17d538bf8c3543b03a72c2fc3bb25,
+        type: 3}
       propertyPath: tomatoPrefab
       value: 
       objectReference: {fileID: 2384283233480700895, guid: d4b39e311c52ffb4c827b4be00a2a460,
@@ -1089,6 +1121,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: ce991667136f7ff4b893c5e7612520da,
         type: 2}
+    - target: {fileID: 6956158023204121319, guid: eea17d538bf8c3543b03a72c2fc3bb25,
+        type: 3}
+      propertyPath: secondClearCounter
+      value: 
+      objectReference: {fileID: 1491510157}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
