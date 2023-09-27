@@ -77,7 +77,9 @@ public class StoveCounter : BaseCounter, IHasProgress
 				if (_burningTimer > _buringRecipeSO.burningTimerMax)
 				{
 					GetKitchenObject().DestroySelf();
+					
 					KitchenObject.SpawnKitchenObject(_buringRecipeSO.output, this);
+					
 					_state = State.Burned;
 					
 					OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
@@ -152,6 +154,7 @@ public class StoveCounter : BaseCounter, IHasProgress
 			else
 			{
 				GetKitchenObject().SetKitchenObjectParent(player);
+				
 				_state = State.Idle;
 				
 				OnStateChanged?.Invoke(this, new OnStateChangedEventArgs
@@ -161,7 +164,7 @@ public class StoveCounter : BaseCounter, IHasProgress
 				
 				OnProgressChanged?.Invoke(this, new IHasProgress.OnProgressChangedEventArgs
 				{
-					progressNormalized = (float)_fryingTimer / _fryingRecipeSO.fryingTimerMax
+					progressNormalized = (float)0f
 				});
 			}
 		}
