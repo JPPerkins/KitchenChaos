@@ -7,7 +7,7 @@ using UnityEngine.Serialization;
 public class CuttingCounterVisual : MonoBehaviour
 {
 	private const string CUT = "Cut";
-	[FormerlySerializedAs("_containerCounter")] [SerializeField] private CuttingCounter _cuttingCounter;
+	[SerializeField] private CuttingCounter _cuttingCounter;
 	private Animator _animator;
 
 	private void Awake()
