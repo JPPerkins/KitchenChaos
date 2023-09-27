@@ -5,7 +5,7 @@ using UnityEngine.Serialization;
 
 public class SelectedCounterVisual : MonoBehaviour
 {
-	[FormerlySerializedAs("clearCounter")] [SerializeField] private BaseCounter baseCounter;
+	[SerializeField] private BaseCounter baseCounter;
 	[SerializeField] private GameObject[] visualGameObjectArray
 		;
 	
