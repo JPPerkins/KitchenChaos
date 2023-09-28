@@ -20,11 +20,13 @@ public class PlatesCounter : BaseCounter
 		spawnPlateTimer += Time.deltaTime;
 		if (!(spawnPlateTimer > spawnPlateTimerMax)) return;
 		spawnPlateTimer = 0f;
-		
-		if (platesSpawnedAmount >= platesSpawnedAmountMax) return;
-		platesSpawnedAmount++;
+
+		if (KitchenGameManager.Instance.IsGamePlaying() && platesSpawnedAmount < platesSpawnedAmountMax)
+		{
+			platesSpawnedAmount++;
 				
-		OnPlateSpawned?.Invoke(this, EventArgs.Empty);
+			OnPlateSpawned?.Invoke(this, EventArgs.Empty);
+		}
 	}
 
 	public override void Interact(Player player)
