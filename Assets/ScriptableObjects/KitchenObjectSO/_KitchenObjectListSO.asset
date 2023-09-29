@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a16184b44fc1d1458e1b531dbbe64b9, type: 3}
   m_Name: _KitchenObjectListSO
   m_EditorClassIdentifier: 
-  KitchenObjectSOKList: []
+  kitchenObjectSOList: []

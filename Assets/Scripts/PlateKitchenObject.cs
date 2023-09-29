@@ -16,8 +16,9 @@ public class PlateKitchenObject : KitchenObject
 	[SerializeField] private List<KitchenObjectSO> ValidKitchenObjectSOList;
 	private List<KitchenObjectSO> KitchenObjectSOList;
 
-	private void Awake()
+	protected override void Awake()
 	{
+		base.Awake();
 		KitchenObjectSOList = new List<KitchenObjectSO>();
 	}
 
