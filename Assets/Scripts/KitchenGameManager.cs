@@ -26,7 +26,7 @@ public class KitchenGameManager : NetworkBehaviour
 	}
 
 	private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
-	private bool isLocalPlayerReady = false;
+	private bool isLocalPlayerReady;
 	private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
 	private NetworkVariable<float> gamePlayingTimer = new NetworkVariable<float>(0f);
 	private float gamePlayingTimerMax = 90f;
@@ -34,7 +34,7 @@ public class KitchenGameManager : NetworkBehaviour
 	private NetworkVariable<bool> isGamePaused = new NetworkVariable<bool>(false);
 	private Dictionary<ulong, bool> playerReadyDictionary;
 	private Dictionary<ulong, bool> playerPausedDictionary;
-
+	private bool autoTestGamePausedState;
 	
 	
 	private void Awake()
@@ -44,11 +44,28 @@ public class KitchenGameManager : NetworkBehaviour
 		playerReadyDictionary = new Dictionary<ulong, bool>();
 		playerPausedDictionary = new Dictionary<ulong, bool>();
 	}
-
+	
+	private void Start()
+	{
+		GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
+		GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
+	}
+	
 	public override void OnNetworkSpawn()
 	{
 		state.OnValueChanged += State_OnValueChanged;
 		isGamePaused.OnValueChanged += IsGamePaused_OnValueChanged;
+
+		if (IsServer)
+		{
+			NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+		}
+	}
+
+	private void NetworkManager_OnClientDisconnectCallback(ulong clientId)
+	{
+		autoTestGamePausedState = true;
+		
 	}
 
 	private void IsGamePaused_OnValueChanged(bool previousvalue, bool newvalue)
@@ -70,11 +87,7 @@ public class KitchenGameManager : NetworkBehaviour
 		OnStateChanged?.Invoke(this, EventArgs.Empty);
 	}
 
-	private void Start()
-	{
-		GameInput.Instance.OnPauseAction += GameInput_OnPauseAction;
-		GameInput.Instance.OnInteractAction += GameInput_OnInteractAction;
-	}
+
 
 	private void GameInput_OnInteractAction(object sender, EventArgs e)
 	{
@@ -116,30 +129,14 @@ public class KitchenGameManager : NetworkBehaviour
 	{
 		TogglePauseGame();
 	}
-
 	
-	
-	public void TogglePauseGame()
-	{
-		isLocalGamePaused = !isLocalGamePaused;
-		if (isLocalGamePaused)
-		{
-			PauseGameServerRpc();
-			OnLocalGamePaused?.Invoke(this,EventArgs.Empty);
-		}
-		else
-		{
-			UnpauseGameServerRpc();
-			OnLocalGameUnpaused?.Invoke(this,EventArgs.Empty);
-		}
-	}
-
 	private void Update()
 	{
 		if (!IsServer)
 		{
 			return;
 		}
+		
 		switch (state.Value)
 		{
 			case State.WaitingToStart:
@@ -165,7 +162,31 @@ public class KitchenGameManager : NetworkBehaviour
 				throw new ArgumentOutOfRangeException();
 		}
 	}
+	
+	private void LateUpdate()
+	{
+		if (autoTestGamePausedState)
+		{
+			autoTestGamePausedState = false;
+			TestGamePausedState();
+		}
+	}
 
+	public void TogglePauseGame()
+	{
+		isLocalGamePaused = !isLocalGamePaused;
+		if (isLocalGamePaused)
+		{
+			PauseGameServerRpc();
+			OnLocalGamePaused?.Invoke(this,EventArgs.Empty);
+		}
+		else
+		{
+			UnpauseGameServerRpc();
+			OnLocalGameUnpaused?.Invoke(this,EventArgs.Empty);
+		}
+	}
+	
 	public bool IsGamePlaying()
 	{
 		return state.Value == State.GamePlaying;
