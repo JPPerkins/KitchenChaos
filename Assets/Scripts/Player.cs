@@ -11,7 +11,6 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 	public static void ResetStaticData()
 	{
 		OnAnyPlayerSpawned = null;
-		OnAnyPickedSomething = null;
 	}
 	
 	public static Player LocalInstance { get; private set; }
@@ -52,7 +51,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 	{
 		if (!KitchenGameManager.Instance.IsGamePlaying()) return;
 
-		if (selectedCounter)
+		if (selectedCounter != null)
 		{
 			selectedCounter.InteractAlternate(this);
 		}
@@ -62,7 +61,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 	{
 		if (!KitchenGameManager.Instance.IsGamePlaying()) return;
 		
-		if (selectedCounter)
+		if (selectedCounter != null)
 		{
 			selectedCounter.Interact(this);
 		}
@@ -76,17 +75,22 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 		HandleInteractions();
 	}
 
+	public bool IsWalking()
+	{
+		return isWalking;
+	}
+	
 	private void HandleInteractions()
 	{
 		Vector2 inputVector = GameInput.Instance.GetMovementVectorNormalized();
 		Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-		float interactDistance = 2f;
-
+		
 		if (moveDir != Vector3.zero)
 		{
 			lastInteractDir = moveDir;
 		}
 		
+		float interactDistance = 2f;
 		if (Physics.Raycast(transform.position, lastInteractDir, out RaycastHit raycastHit, interactDistance, countersLayerMask))
 		{
 			if (raycastHit.transform.TryGetComponent(out BaseCounter baseCounter))
@@ -158,10 +162,7 @@ public class Player : NetworkBehaviour, IKitchenObjectParent
 		transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotateSpeed);
 	}
 
-	public bool IsWalking()
-	{
-		return isWalking;
-	}
+
 
 	private void SetSelectedCounter(BaseCounter selectedCounter)
 	{
