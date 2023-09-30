@@ -20,6 +20,8 @@ public class KitchenGameLobby : MonoBehaviour
 	
 	public static KitchenGameLobby Instance { get; private set; }
 
+	
+    
 	public event EventHandler OnCreateLobbyStarted;
 	public event EventHandler OnCreateLobbyFailed;
 	public event EventHandler OnJoinStarted;
@@ -50,7 +52,7 @@ public class KitchenGameLobby : MonoBehaviour
 		if (UnityServices.State != ServicesInitializationState.Initialized)
 		{
 			InitializationOptions initializationOptions = new InitializationOptions();
-			initializationOptions.SetProfile(Random.Range(0, 10000).ToString());
+			//initializationOptions.SetProfile(Random.Range(0, 10000).ToString());
 			await UnityServices.InitializeAsync(initializationOptions);
 
 			await AuthenticationService.Instance.SignInAnonymouslyAsync();
