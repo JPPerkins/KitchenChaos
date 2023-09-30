@@ -74,7 +74,7 @@ public class KitchenGameLobby : MonoBehaviour
 			if (listLobbiesTimer <= 0f)
 			{
 				float listLobbiesTimerMax = 3f;
-				listLobbiesTimer = -listLobbiesTimerMax;
+				listLobbiesTimer = listLobbiesTimerMax;
 				ListLobbies();
 			}
 		}

@@ -7,10 +7,9 @@ using UnityEngine;
 public class CharacterSelectReady : NetworkBehaviour
 {
 	public static CharacterSelectReady Instance { get; private set; }
+	public event EventHandler OnReadyChanged;
     private Dictionary<ulong, bool> playerReadyDictionary;
-
-
-    public event EventHandler OnReadyChanged;
+    
     private void Awake()
     {
 	    Instance = this;
