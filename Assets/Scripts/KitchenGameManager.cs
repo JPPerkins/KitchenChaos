@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class KitchenGameManager : NetworkBehaviour
 {
@@ -25,6 +26,8 @@ public class KitchenGameManager : NetworkBehaviour
 		GameOver,
 	}
 
+	[SerializeField] private Transform playerPrefab;
+	
 	private NetworkVariable<State> state = new NetworkVariable<State>(State.WaitingToStart);
 	private bool isLocalPlayerReady;
 	private NetworkVariable<float> countdownToStartTimer = new NetworkVariable<float>(3f);
@@ -59,6 +62,16 @@ public class KitchenGameManager : NetworkBehaviour
 		if (IsServer)
 		{
 			NetworkManager.Singleton.OnClientDisconnectCallback += NetworkManager_OnClientDisconnectCallback;
+			NetworkManager.Singleton.SceneManager.OnLoadEventCompleted += SceneManager_OnLoadEventCompleted;
+		}
+	}
+
+	private void SceneManager_OnLoadEventCompleted(string sceneName, LoadSceneMode loadscenemode, List<ulong> clientscompleted, List<ulong> clientstimedout)
+	{
+		foreach (ulong clientId in NetworkManager.Singleton.ConnectedClientsIds)
+		{
+			Transform playerTransform = Instantiate(playerPrefab);
+			playerTransform.GetComponent<NetworkObject>().SpawnAsPlayerObject(clientId, true);
 		}
 	}
 
@@ -97,7 +110,7 @@ public class KitchenGameManager : NetworkBehaviour
 			
 			OnLocalPlayerReadyChanged?.Invoke(this,EventArgs.Empty);
 			
-			SetPlayerReadyServerRpc();
+			SetPlayerReadyServerRpc();                                                                      
 			
 			
 		}
@@ -202,6 +215,11 @@ public class KitchenGameManager : NetworkBehaviour
 		return countdownToStartTimer.Value;
 	}
 
+	public bool IsWaitingToStart()
+	{
+		return state.Value == State.WaitingToStart;
+	}
+	
 	public bool IsGameOver()
 	{
 		return state.Value == State.GameOver;
